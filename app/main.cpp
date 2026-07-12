@@ -1,8 +1,6 @@
 #include <print>
 
-#include "silk/version.hpp"
-
 int main() {
-    std::println("silk {}", silk::library_version());
+    std::println("Hello World");
     return 0;
 }

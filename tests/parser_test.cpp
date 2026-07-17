@@ -44,3 +44,17 @@ TEST(Parser, BasicAddOrder)
 
     EXPECT_EQ(parser.ParseAdd(&TestMessageAddBuy[0]), TestOrderAddBuy);
 }
+
+TEST(Parser, ParseUint8)
+{
+    std::uint8_t message[1]{0x40};
+
+    EXPECT_EQ(silk::ParseValue<std::uint16_t>(message), 4);
+}
+
+TEST(Parser, ParseUint16)
+{
+    std::uint8_t message[2]{0x00, 0x04};
+
+    EXPECT_EQ(silk::ParseValue<std::uint16_t>(message), 4);
+}

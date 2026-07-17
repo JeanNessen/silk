@@ -24,6 +24,44 @@ struct AddOrder
     std::int32_t        price = 0;
 };
 
+// Offsets based on the spec
+constexpr std::size_t OffType = 0;
+constexpr std::size_t LenType = 1;
+
+constexpr std::size_t OffLocate = OffType + LenType;
+constexpr std::size_t LenLocate = 2;
+
+constexpr std::size_t OffTracking = OffLocate + LenLocate;
+constexpr std::size_t LenTracking = 2;
+
+constexpr std::size_t OffTimestamp = OffTracking + LenTracking;
+constexpr std::size_t LenTimestamp = 6;
+
+constexpr std::size_t OffRefNum = OffTimestamp + LenTimestamp;
+constexpr std::size_t LenRefNum = 8;
+
+constexpr std::size_t OffSide = OffRefNum + LenRefNum;
+constexpr std::size_t LenSide = 1;
+
+constexpr std::size_t OffNumShares = OffSide + LenSide;
+constexpr std::size_t LenNumShares = 4;
+
+constexpr std::size_t OffStock = OffNumShares + LenNumShares;
+constexpr std::size_t LenStock = 8;
+
+constexpr std::size_t OffPrice = OffStock + LenStock;
+constexpr std::size_t LenPrice = 4;
+
+static_assert(OffLocate == 1);
+static_assert(OffTracking == 3);
+static_assert(OffTimestamp == 5);
+static_assert(OffRefNum == 11);
+static_assert(OffSide == 19);
+static_assert(OffNumShares == 20);
+static_assert(OffStock == 24);
+static_assert(OffPrice == 32);
+
+
 inline bool operator==(const AddOrder& lhs, const AddOrder& rhs)
 {
     return lhs.locate == rhs.locate && lhs.tracking == rhs.tracking && lhs.timestamp == rhs.timestamp

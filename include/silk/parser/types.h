@@ -2,6 +2,8 @@
 
 #include <array>
 #include <cstdint>
+#include <ostream>
+#include <utility>
 
 namespace silk
 {
@@ -23,6 +25,15 @@ struct AddOrder
     std::array<char, 8> stock{0x00};
     std::int32_t        price = 0;
 };
+
+inline void PrintTo(const AddOrder& order, std::ostream* os)
+{
+    *os << "Order{\nlocate=" << order.locate << ", \ntracking=" << order.tracking << ", \ntimestamp=" << order.timestamp
+        << ", \nrefNum=" << order.refNum << ", \nside=" << std::to_underlying(order.side)
+        << ", \nnumShares=" << order.numShares
+        << ", \nstock=" << std::string_view(order.stock.data(), order.stock.size()) << ", \nprice=" << order.price
+        << "}";
+}
 
 // Offsets based on the spec
 constexpr std::size_t OffType = 0;

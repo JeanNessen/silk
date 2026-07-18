@@ -1,4 +1,4 @@
-add_library(silk_parser parser.cpp)
+add_library(silk_parser parser.cpp utils.cpp file.cpp)
 add_library(silk::parser ALIAS silk_parser)
 
 target_include_directories(silk_parser

@@ -14,7 +14,7 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-add_executable(silk_tests parser_test.cpp)
+add_executable(silk_tests parser_test.cpp file_test.cpp)
 
 target_link_libraries(silk_tests
     PRIVATE

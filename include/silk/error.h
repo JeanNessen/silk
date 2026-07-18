@@ -11,7 +11,7 @@ enum class ErrorCode : std::uint8_t
 struct Error
 {
     ErrorCode code;
-    int       errno = 0;
+    int       no = 0;
 };
 
 template <class T>

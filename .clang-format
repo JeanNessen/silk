@@ -29,12 +29,13 @@ BraceWrapping:
   SplitEmptyNamespace: false
 
 # Line breaking
-ColumnLimit: 120
+ColumnLimit: 79
 BreakBeforeBinaryOperators: NonAssignment
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializers: BeforeComma
 BreakInheritanceList: BeforeComma
 BreakStringLiterals: true
+BreakTemplateDeclarations: Yes
 
 # Alignment
 AlignAfterOpenBracket: Align

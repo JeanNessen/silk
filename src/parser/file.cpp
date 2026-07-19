@@ -70,6 +70,7 @@ Result<MappedFile> Open(std::string path)
 
     auto pAddress = reinterpret_cast<std::uint8_t*>(
         mmap(NULL, file.GetLen(), PROT_READ, MAP_PRIVATE, fd, 0));
+    madvise(pAddress, file.GetLen(), MADV_POPULATE_READ);
 
     if (pAddress == MAP_FAILED)
     {

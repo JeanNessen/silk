@@ -7,13 +7,14 @@ namespace silk
 {
 enum class Side
 {
+    None = 0,
     Buy,
     Sell,
-    None,
 };
 
 enum class Type
 {
+    None = 0,
     Add,
     AddMPID,
     Executed,
@@ -21,7 +22,6 @@ enum class Type
     Canceled,
     Deleted,
     Replaced,
-    None,
 };
 
 struct OrderHeader
@@ -70,6 +70,29 @@ struct OrderExecutedWithPrice
     std::uint32_t executionPrice = 0;
 };
 
+struct OrderCanceled
+{
+    bool          operator==(const OrderCanceled&) const = default;
+    OrderHeader   header;
+    std::uint32_t canceledShares = 0;
+};
+
+struct OrderDeleted
+{
+    bool        operator==(const OrderDeleted&) const = default;
+    OrderHeader header;
+};
+
+struct OrderReplaced
+{
+    bool          operator==(const OrderReplaced&) const = default;
+    OrderHeader   header;
+    std::uint64_t newRefNum = 0;
+    std::uint32_t shares    = 0;
+    std::uint32_t price     = 0;
+};
+
+constexpr std::size_t LenMessageLen     = 2;
 constexpr std::size_t LenType           = 1;
 constexpr std::size_t LenLocate         = 2;
 constexpr std::size_t LenTracking       = 2;
@@ -84,5 +107,6 @@ constexpr std::size_t LenExecutedShares = 4;
 constexpr std::size_t LenMatchNum       = 8;
 constexpr std::size_t LenPrintable      = 1;
 constexpr std::size_t LenExecutionPrice = 4;
+constexpr std::size_t LenCanceledShares = 4;
 
 }  // namespace silk

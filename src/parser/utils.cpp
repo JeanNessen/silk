@@ -77,5 +77,13 @@ void PrintTo(const OrderAddMPID& order, std::ostream* os)
     *os << ", \nmpid=" << order.mpid << "}";
 }
 
+void PrintTo(const OrderReplaced& order, std::ostream* os)
+{
+    *os << "OrderReplaced{\nheader={";
+    PrintTo(order.header, os);
+    *os << "}, \nnewRefNum=" << order.newRefNum
+        << ", \nshares=" << order.shares << ", \nprice=" << order.price << "}";
+}
+
 
 }  // namespace silk

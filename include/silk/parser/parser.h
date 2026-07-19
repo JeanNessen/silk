@@ -13,6 +13,27 @@
 namespace silk
 {
 
+constexpr auto SideLut = []
+{
+    std::array<Side, 256> t{};
+    t['B'] = Side::Buy;
+    t['S'] = Side::Sell;
+    return t;
+}();
+
+constexpr auto TypeLut = []
+{
+    std::array<Type, 256> t{};
+    t['A'] = Type::Add;
+    t['F'] = Type::AddMPID;
+    t['E'] = Type::Executed;
+    t['C'] = Type::ExecutedWithPrice;
+    t['X'] = Type::Canceled;
+    t['D'] = Type::Deleted;
+    t['U'] = Type::Replaced;
+    return t;
+}();
+
 template <std::integral T, size_t size = sizeof(T)>
 inline auto ParseValue(const uint8_t* pMessage)
 {
@@ -58,43 +79,13 @@ inline auto ParseValue(const uint8_t* pMessage)
 template <std::same_as<Side> T, std::size_t size>
 inline Side ParseValue(const uint8_t* pMessage)
 {
-    char t{};
-    std::memcpy(&t, pMessage, sizeof(char));
-    switch (t)
-    {
-        case 'B':
-            return Side::Buy;
-        case 'S':
-            return Side::Sell;
-        default:
-            return Side::None;
-    }
+    return SideLut[*pMessage];
 }
 
 template <std::same_as<Type> T, std::size_t size>
 inline Type ParseValue(const uint8_t* pMessage)
 {
-    char t{};
-    std::memcpy(&t, pMessage, sizeof(char));
-    switch (t)
-    {
-        case 'A':
-            return Type::Add;
-        case 'F':
-            return Type::AddMPID;
-        case 'E':
-            return Type::Executed;
-        case 'C':
-            return Type::ExecutedWithPrice;
-        case 'X':
-            return Type::Canceled;
-        case 'D':
-            return Type::Deleted;
-        case 'U':
-            return Type::Replaced;
-        default:
-            return Type::None;
-    }
+    return TypeLut[*pMessage];
 }
 
 template <typename T, std::size_t size>
@@ -115,10 +106,11 @@ inline OrderHeader BuildHeader(const std::uint8_t*& pCursor)
     };
 }
 
-inline OrderAdd BuildAdd(const std::uint8_t*& pCursor)
+inline OrderAdd BuildAdd(const std::uint8_t*& pCursor,
+                         const OrderHeader&   header)
 {
     return {
-        .header    = BuildHeader(pCursor),
+        .header    = header,
         .side      = Extract<Side, LenSide>(pCursor),
         .numShares = Extract<std::uint32_t, LenShares>(pCursor),
         .stock     = Extract<char, LenStock>(pCursor),
@@ -126,12 +118,24 @@ inline OrderAdd BuildAdd(const std::uint8_t*& pCursor)
     };
 }
 
-inline OrderExecuted BuildExecuted(const std::uint8_t*& pCursor)
+inline OrderExecuted BuildExecuted(const std::uint8_t*& pCursor,
+                                   const OrderHeader&   header)
 {
     return {
-        .header         = BuildHeader(pCursor),
+        .header         = header,
         .executedShares = Extract<std::uint32_t, LenExecutedShares>(pCursor),
         .matchNum       = Extract<std::uint64_t, LenMatchNum>(pCursor),
+    };
+}
+
+inline OrderReplaced BuildReplaced(const std::uint8_t*& pCursor,
+                                   const OrderHeader&   header)
+{
+    return {
+        .header    = header,
+        .newRefNum = Extract<std::uint64_t, LenRefNum>(pCursor),
+        .shares    = Extract<std::uint32_t, LenShares>(pCursor),
+        .price     = Extract<std::uint32_t, LenPrice>(pCursor),
     };
 }
 
@@ -140,34 +144,50 @@ void ParseMessage(const std::uint8_t* pMessage, Handler& h)
 {
     const std::uint8_t* pCursor = pMessage;
 
-    auto type = Extract<Type, LenType>(pCursor);
+    auto type   = Extract<Type, LenType>(pCursor);
+    auto header = BuildHeader(pCursor);
 
     switch (type)
     {
         case Type::Add:
-            h.OnAdd(BuildAdd(pCursor));
+            h.OnAdd(BuildAdd(pCursor, header));
             break;
         case Type::AddMPID:
             h.OnAddMPID({
-                .add  = BuildAdd(pCursor),
+                .add  = BuildAdd(pCursor, header),
                 .mpid = Extract<std::uint32_t, LenMPID>(pCursor),
             });
             break;
         case Type::Executed:
-            h.OnExecuted(BuildExecuted(pCursor));
+            h.OnExecuted(BuildExecuted(pCursor, header));
             break;
         case Type::ExecutedWithPrice:
             h.OnExecutedWithPrice({
-                .executed  = BuildExecuted(pCursor),
+                .executed  = BuildExecuted(pCursor, header),
                 .printable = Extract<bool, LenPrintable>(pCursor),
                 .executionPrice =
                     Extract<std::uint32_t, LenExecutionPrice>(pCursor),
             });
             break;
         case Type::Canceled:
+            h.OnCanceled({
+                .header = header,
+                .canceledShares =
+                    Extract<std::uint32_t, LenCanceledShares>(pCursor),
+            });
+            break;
         case Type::Deleted:
+            h.OnDeleted({
+                .header = header,
+            });
+            break;
         case Type::Replaced:
+            h.OnReplaced(BuildReplaced(pCursor, header));
+            break;
         case Type::None:
+            // We don't handle this message type so just advance the cursor to
+            // skip it.
+            h.OnSkipped();
             break;
     }
 }

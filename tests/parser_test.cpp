@@ -7,29 +7,96 @@
 #include <silk/parser/types.h>
 #include <silk/parser/utils.h>
 
-constexpr std::uint8_t MessageAddBuy[36]{
-    0x41, 0x10, 0x27, 0x00, 0x00, 0x1f, 0x1a, 0xce, 0xd9, 0xf0, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0xa4, 0x66, 0x42, 0x00, 0x00, 0x00, 0x64,
-    0x41, 0x41, 0x50, 0x4c, 0x20, 0x20, 0x20, 0x20, 0x00, 0x12, 0xd6, 0x44,
+// clang-format off
+constexpr std::array<std::uint8_t, 36> MessageAdd{
+    0x41,                                           // Message Type
+    0x10, 0x27,                                     // Stock Locate
+    0x00, 0x00,                                     // Tracking Number
+    0x1f, 0x1a, 0xce, 0xd9, 0xf0, 0x00,             // Timestamp
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xa4, 0x66, // Reference Number
+
+    0x42,                                           // Buy/Sell Indicator
+    0x00, 0x00, 0x00, 0x64,                         // Shares
+    0x41, 0x41, 0x50, 0x4c, 0x20, 0x20, 0x20, 0x20, // Stock
+    0x00, 0x12, 0xd6, 0x44,                         // Price
 };
 
-constexpr std::uint8_t MessageAddBuyMPID[40]{
-    0x46, 0x10, 0x27, 0x00, 0x00, 0x1f, 0x1a, 0xce, 0xd9, 0xf0,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xa4, 0x66, 0x42,
-    0x00, 0x00, 0x00, 0x64, 0x41, 0x41, 0x50, 0x4c, 0x20, 0x20,
-    0x20, 0x20, 0x00, 0x12, 0xd6, 0x44, 0x00, 0x00, 0x30, 0x39,
+constexpr std::array<std::uint8_t, 40> MessageAddMPID{
+    0x46,                                           // Message Type
+    0x10, 0x27,                                     // Stock Locate
+    0x00, 0x00,                                     // Tracking Number
+    0x1f, 0x1a, 0xce, 0xd9, 0xf0, 0x00,             // Timestamp
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xa4, 0x66, // Reference Number
+
+    0x42,                                           // Buy/Sell Indicator
+    0x00, 0x00, 0x00, 0x64,                         // Shares
+    0x41, 0x41, 0x50, 0x4c, 0x20, 0x20, 0x20, 0x20, // Stock
+    0x00, 0x12, 0xd6, 0x44,                         // Price
+    0x00, 0x00, 0x30, 0x39,                         // Attribution
 };
 
-constexpr std::uint8_t MessageHeader[19]{
-    0x41, 0x10, 0x27, 0x00, 0x00, 0x1f, 0x1a, 0xce, 0xd9, 0xf0,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xa4, 0x66,
+constexpr std::array<std::uint8_t, 19> MessageHeader{
+    0x41,                                           // Message Type
+    0x10, 0x27,                                     // Stock Locate
+    0x00, 0x00,                                     // Tracking Number
+    0x1f, 0x1a, 0xce, 0xd9, 0xf0, 0x00,             // Timestamp
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xa4, 0x66, // Reference Number
 };
 
-constexpr std::uint8_t MessageExecuted[]{
-    0x45, 0x10, 0x27, 0x00, 0x00, 0x1f, 0x1a, 0xce, 0xd9, 0xf0, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xa4, 0x66, 0x00, 0x00, 0x00,
-    0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03,
+constexpr std::array<std::uint8_t, 31> MessageExecuted{
+    0x45,                                           // Message Type
+    0x10, 0x27,                                     // Stock Locate
+    0x00, 0x00,                                     // Tracking Number
+    0x1f, 0x1a, 0xce, 0xd9, 0xf0, 0x00,             // Timestamp
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xa4, 0x66, // Reference Number
+
+    0x00, 0x00, 0x00, 0x09,                         // Executed Shares
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, // Match Number
 };
+
+constexpr std::array<std::uint8_t, 36> MessageExecutedWithPrice{
+    0x43,                                           // Message Type
+    0x10, 0x27,                                     // Stock Locate
+    0x00, 0x00,                                     // Tracking Number
+    0x1f, 0x1a, 0xce, 0xd9, 0xf0, 0x00,             // Timestamp
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xa4, 0x66, // Reference Number
+
+    0x00, 0x00, 0x00, 0x09,                         // Executed Shares
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, // Match Number
+    0x59,                                           // Printable
+    0x00, 0x00, 0x00, 0x5A,                         // Price
+};
+
+constexpr std::array<std::uint8_t, 23> MessageCanceled{
+    0x58,                                           // Message Type
+    0x10, 0x27,                                     // Stock Locate
+    0x00, 0x00,                                     // Tracking Number
+    0x1f, 0x1a, 0xce, 0xd9, 0xf0, 0x00,             // Timestamp
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xa4, 0x66, // Reference Number
+
+    0x00, 0x00, 0x00, 0x32,                         // Canceled Shares
+};
+
+constexpr std::array<std::uint8_t, 19> MessageDeleted{
+    0x44,                                           // Message Type
+    0x10, 0x27,                                     // Stock Locate
+    0x00, 0x00,                                     // Tracking Number
+    0x1f, 0x1a, 0xce, 0xd9, 0xf0, 0x00,             // Timestamp
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xa4, 0x66, // Reference Number
+};
+
+constexpr std::array<std::uint8_t, 35> MessageReplaced{
+    0x55,                                           // Message Type
+    0x10, 0x27,                                     // Stock Locate
+    0x00, 0x00,                                     // Tracking Number
+    0x1f, 0x1a, 0xce, 0xd9, 0xf0, 0x00,             // Timestamp
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xa4, 0x66, // Reference Number
+
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x59, // New Order Reference
+    0x00, 0x00, 0x03, 0x0B,                         // Shares
+    0x00, 0x00, 0x00, 0x0B,                         // Price
+};
+// clang-format on
 
 constexpr silk::OrderHeader Header{
     .locate    = 4135,
@@ -38,7 +105,7 @@ constexpr silk::OrderHeader Header{
     .refNum    = 42086,
 };
 
-constexpr silk::OrderAdd AddBuy{
+constexpr silk::OrderAdd Add{
     .header    = Header,
     .side      = silk::Side::Buy,
     .numShares = 100,
@@ -46,8 +113,8 @@ constexpr silk::OrderAdd AddBuy{
     .price     = 1234500,
 };
 
-constexpr silk::OrderAddMPID AddBuyMPID{
-    .add  = AddBuy,
+constexpr silk::OrderAddMPID AddMPID{
+    .add  = Add,
     .mpid = 12345,
 };
 
@@ -55,6 +122,28 @@ constexpr silk::OrderExecuted Executed{
     .header         = Header,
     .executedShares = 9,
     .matchNum       = 3,
+};
+
+constexpr silk::OrderExecutedWithPrice ExecutedWithPrice{
+    .executed       = Executed,
+    .printable      = true,
+    .executionPrice = 90,
+};
+
+constexpr silk::OrderCanceled Canceled{
+    .header         = Header,
+    .canceledShares = 50,
+};
+
+constexpr silk::OrderDeleted Deleted{
+    .header = Header,
+};
+
+constexpr silk::OrderReplaced Replaced{
+    .header    = Header,
+    .newRefNum = 89,
+    .shares    = 779,
+    .price     = 11,
 };
 
 class TestHandler final
@@ -67,12 +156,19 @@ public:
     {
         lastExecutedWithPrice = order;
     }
+    void OnCanceled(silk::OrderCanceled order) { lastCanceled = order; }
+    void OnDeleted(silk::OrderDeleted order) { lastDeleted = order; }
+    void OnReplaced(silk::OrderReplaced order) { lastReplaced = order; }
+    void OnSkipped() {};
 
 public:
     silk::OrderAdd               lastAdd;
     silk::OrderAddMPID           lastAddMPID;
     silk::OrderExecuted          lastExecuted;
     silk::OrderExecutedWithPrice lastExecutedWithPrice;
+    silk::OrderCanceled          lastCanceled;
+    silk::OrderDeleted           lastDeleted;
+    silk::OrderReplaced          lastReplaced;
 };
 
 TEST(Parser, Header)
@@ -85,22 +181,50 @@ TEST(Parser, Header)
 TEST(Parser, HandlerAdd)
 {
     TestHandler handler;
-    silk::ParseMessage(MessageAddBuy, handler);
-    EXPECT_EQ(handler.lastAdd, AddBuy);
+    silk::ParseMessage(MessageAdd.data(), handler);
+    EXPECT_EQ(handler.lastAdd, Add);
 }
 
 TEST(Parser, HandlerAddMPID)
 {
     TestHandler handler;
-    silk::ParseMessage(MessageAddBuyMPID, handler);
-    EXPECT_EQ(handler.lastAddMPID, AddBuyMPID);
+    silk::ParseMessage(MessageAddMPID.data(), handler);
+    EXPECT_EQ(handler.lastAddMPID, AddMPID);
 }
 
 TEST(Parser, HandlerExecuted)
 {
     TestHandler handler;
-    silk::ParseMessage(MessageExecuted, handler);
+    silk::ParseMessage(MessageExecuted.data(), handler);
     EXPECT_EQ(handler.lastExecuted, Executed);
+}
+
+TEST(Parser, HandlerExecutedWithPrice)
+{
+    TestHandler handler;
+    silk::ParseMessage(MessageExecutedWithPrice.data(), handler);
+    EXPECT_EQ(handler.lastExecutedWithPrice, ExecutedWithPrice);
+}
+
+TEST(Parser, HandlerCanceled)
+{
+    TestHandler handler;
+    silk::ParseMessage(MessageCanceled.data(), handler);
+    EXPECT_EQ(handler.lastCanceled, Canceled);
+}
+
+TEST(Parser, HandlerDeleted)
+{
+    TestHandler handler;
+    silk::ParseMessage(MessageDeleted.data(), handler);
+    EXPECT_EQ(handler.lastDeleted, Deleted);
+}
+
+TEST(Parser, HandlerReplaced)
+{
+    TestHandler handler;
+    silk::ParseMessage(MessageReplaced.data(), handler);
+    EXPECT_EQ(handler.lastReplaced, Replaced);
 }
 
 TEST(Parser, Uint8)

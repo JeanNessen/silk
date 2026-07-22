@@ -2,8 +2,7 @@
 #include <fstream>
 
 #include <gtest/gtest.h>
-
-#include "silk/parser/file.h"
+#include <slk/io/file.h>
 
 TEST(File, load)
 {

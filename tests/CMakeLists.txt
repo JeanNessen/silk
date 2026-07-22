@@ -14,13 +14,16 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-add_executable(silk_tests parser_test.cpp file_test.cpp)
+add_executable(slk_tests utils.cpp parser_test.cpp file_test.cpp)
 
-target_link_libraries(silk_tests
+target_link_libraries(slk_tests
     PRIVATE
-        silk::parser
+        slk::parser
+        slk::io
         GTest::gtest_main)
+
+target_include_directories(slk_tests PRIVATE ${CMAKE_SOURCE_DIR}/src)
 
 # Register the tests with CTest via GoogleTest's discovery helper.
 include(GoogleTest)
-gtest_discover_tests(silk_tests)
+gtest_discover_tests(slk_tests)

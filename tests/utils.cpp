@@ -1,8 +1,7 @@
-#include "silk/parser/utils.h"
+#include "utils.h"
 
 #include <cassert>
 #include <ostream>
-#include <string_view>
 #include <utility>
 
 #include <err.h>
@@ -10,40 +9,13 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include <slk/core/types.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#include "silk/parser/types.h"
-
 namespace silk
 {
-
-std::string ToString(const Type type)
-{
-    switch (type)
-    {
-        case Type::Add:
-            return "Add";
-        case Type::AddMPID:
-            return "AddMPID";
-        case Type::Executed:
-            return "Executed";
-        case Type::ExecutedWithPrice:
-            return "ExecutedWithPrice";
-        case Type::Canceled:
-            return "Canceled";
-        case Type::Deleted:
-            return "Deleted";
-        case Type::Replaced:
-            return "Replaced";
-        case Type::None:
-            return "None";
-    }
-
-    assert("Unexpected Type");
-    return "Unexpected Type";
-}
 
 void PrintTo(const OrderHeader& header, std::ostream* os)
 {

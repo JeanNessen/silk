@@ -1,10 +1,9 @@
 #include <chrono>
 #include <print>
 
-#include "silk/parser/file.h"
-#include "silk/parser/parse_file.h"
-#include "silk/parser/types.h"
-#include "silk/parser/utils.h"
+#include <slk/core/types.h>
+#include <slk/io/file.h>
+#include <slk/parser/parse_file.h>
 
 class StdOutHandler final
 {
@@ -34,11 +33,6 @@ public:
     }
 
 private:
-    void PrintOrderType(silk::Type type)
-    {
-        std::println("Order: {}", silk::ToString(type));
-    }
-
 private:
     size_t m_numAdd               = 0;
     size_t m_numAddMPID           = 0;

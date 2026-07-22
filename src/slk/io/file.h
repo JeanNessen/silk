@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <string>
 
-#include <silk/error.h>
+#include <slk/core/error.h>
 
 namespace silk
 {

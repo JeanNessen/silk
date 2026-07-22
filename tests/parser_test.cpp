@@ -3,9 +3,10 @@
 #include <string_view>
 
 #include <gtest/gtest.h>
-#include <silk/parser/parser.h>
-#include <silk/parser/types.h>
-#include <silk/parser/utils.h>
+#include <slk/core/types.h>
+#include <slk/parser/parser.h>
+
+#include "utils.h"
 
 // clang-format off
 constexpr std::array<std::uint8_t, 36> MessageAdd{

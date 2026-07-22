@@ -2,9 +2,9 @@
 
 #include <cstdint>
 
-#include "silk/parser/file.h"
-#include "silk/parser/parser.h"
-#include "silk/parser/types.h"
+#include <slk/core/types.h>
+#include <slk/io/file.h>
+#include <slk/parser/parser.h>
 
 namespace silk
 {

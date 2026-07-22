@@ -8,7 +8,7 @@
 #include <cstdint>
 #include <cstring>
 
-#include "types.h"
+#include <slk/core/types.h>
 
 namespace silk
 {

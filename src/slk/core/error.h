@@ -1,6 +1,7 @@
 
 #include <cstdint>
 #include <expected>
+
 namespace silk
 {
 enum class ErrorCode : std::uint8_t

@@ -37,19 +37,19 @@ option(SILK_WARNINGS_AS_ERRORS "Treat compiler warnings as errors" OFF)
 
 # ---- Interface target carrying common warning flags ----
 
-add_library(silk_warnings INTERFACE)
-add_library(silk::warnings ALIAS silk_warnings)
+add_library(slk_warnings INTERFACE)
+add_library(slk::warnings ALIAS slk_warnings)
 
 if(MSVC)
-    target_compile_options(silk_warnings INTERFACE /W4 /permissive-)
+    target_compile_options(slk_warnings INTERFACE /W4 /permissive-)
     if(SILK_WARNINGS_AS_ERRORS)
-        target_compile_options(silk_warnings INTERFACE /WX)
+        target_compile_options(slk_warnings INTERFACE /WX)
     endif()
 else()
-    target_compile_options(silk_warnings INTERFACE
+    target_compile_options(slk_warnings INTERFACE
         -Wall -Wextra -Wpedantic -Wshadow -Wconversion)
     if(SILK_WARNINGS_AS_ERRORS)
-        target_compile_options(silk_warnings INTERFACE -Werror)
+        target_compile_options(slk_warnings INTERFACE -Werror)
     endif()
 endif()
 

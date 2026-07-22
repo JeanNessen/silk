@@ -4,5 +4,8 @@ add_executable(silk main.cpp)
 
 target_link_libraries(silk
     PRIVATE
-        silk::parser
-        silk::warnings)
+        slk::parser
+        slk::warnings)
+
+target_include_directories(silk
+    PUBLIC ${CMAKE_SOURCE_DIR}/src )

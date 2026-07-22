@@ -9,7 +9,7 @@
 #include <sys/mman.h>
 #include <sys/stat.h>
 
-namespace silk
+namespace slk
 {
 MappedFile::MappedFile() {}
 
@@ -88,4 +88,4 @@ Result<MappedFile> Open(std::string path)
     return file;
 }
 
-}  // namespace silk
+}  // namespace slk

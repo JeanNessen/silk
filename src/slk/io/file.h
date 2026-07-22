@@ -6,7 +6,7 @@
 
 #include <slk/core/error.h>
 
-namespace silk
+namespace slk
 {
 
 // This class wraps a file mapped via mmap
@@ -37,4 +37,4 @@ private:
 
 Result<MappedFile> Open(std::string path);
 
-}  // namespace silk
+}  // namespace slk

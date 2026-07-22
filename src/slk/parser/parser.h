@@ -10,7 +10,7 @@
 
 #include <slk/core/types.h>
 
-namespace silk
+namespace slk
 {
 
 constexpr auto SideLut = []
@@ -192,4 +192,4 @@ void ParseMessage(const std::uint8_t* pMessage, Handler& h)
     }
 }
 
-}  // namespace silk
+}  // namespace slk

@@ -11,7 +11,7 @@ TEST(File, load)
     file << "HALLO";
     file.close();
 
-    auto result = silk::Open("test");
+    auto result = slk::Open("test");
     EXPECT_TRUE(result.has_value());
 
     auto pAddress = result->GetAddress();

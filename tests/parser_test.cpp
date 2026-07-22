@@ -99,48 +99,48 @@ constexpr std::array<std::uint8_t, 35> MessageReplaced{
 };
 // clang-format on
 
-constexpr silk::OrderHeader Header{
+constexpr slk::OrderHeader Header{
     .locate    = 4135,
     .tracking  = 0,
     .timestamp = 34200000000000,
     .refNum    = 42086,
 };
 
-constexpr silk::OrderAdd Add{
+constexpr slk::OrderAdd Add{
     .header    = Header,
-    .side      = silk::Side::Buy,
+    .side      = slk::Side::Buy,
     .numShares = 100,
     .stock     = {'A', 'A', 'P', 'L', ' ', ' ', ' ', ' '},
     .price     = 1234500,
 };
 
-constexpr silk::OrderAddMPID AddMPID{
+constexpr slk::OrderAddMPID AddMPID{
     .add  = Add,
     .mpid = 12345,
 };
 
-constexpr silk::OrderExecuted Executed{
+constexpr slk::OrderExecuted Executed{
     .header         = Header,
     .executedShares = 9,
     .matchNum       = 3,
 };
 
-constexpr silk::OrderExecutedWithPrice ExecutedWithPrice{
+constexpr slk::OrderExecutedWithPrice ExecutedWithPrice{
     .executed       = Executed,
     .printable      = true,
     .executionPrice = 90,
 };
 
-constexpr silk::OrderCanceled Canceled{
+constexpr slk::OrderCanceled Canceled{
     .header         = Header,
     .canceledShares = 50,
 };
 
-constexpr silk::OrderDeleted Deleted{
+constexpr slk::OrderDeleted Deleted{
     .header = Header,
 };
 
-constexpr silk::OrderReplaced Replaced{
+constexpr slk::OrderReplaced Replaced{
     .header    = Header,
     .newRefNum = 89,
     .shares    = 779,
@@ -150,81 +150,81 @@ constexpr silk::OrderReplaced Replaced{
 class TestHandler final
 {
 public:
-    void OnAdd(silk::OrderAdd order) { lastAdd = order; }
-    void OnAddMPID(silk::OrderAddMPID order) { lastAddMPID = order; }
-    void OnExecuted(silk::OrderExecuted order) { lastExecuted = order; }
-    void OnExecutedWithPrice(silk::OrderExecutedWithPrice order)
+    void OnAdd(slk::OrderAdd order) { lastAdd = order; }
+    void OnAddMPID(slk::OrderAddMPID order) { lastAddMPID = order; }
+    void OnExecuted(slk::OrderExecuted order) { lastExecuted = order; }
+    void OnExecutedWithPrice(slk::OrderExecutedWithPrice order)
     {
         lastExecutedWithPrice = order;
     }
-    void OnCanceled(silk::OrderCanceled order) { lastCanceled = order; }
-    void OnDeleted(silk::OrderDeleted order) { lastDeleted = order; }
-    void OnReplaced(silk::OrderReplaced order) { lastReplaced = order; }
+    void OnCanceled(slk::OrderCanceled order) { lastCanceled = order; }
+    void OnDeleted(slk::OrderDeleted order) { lastDeleted = order; }
+    void OnReplaced(slk::OrderReplaced order) { lastReplaced = order; }
     void OnSkipped() {};
 
 public:
-    silk::OrderAdd               lastAdd;
-    silk::OrderAddMPID           lastAddMPID;
-    silk::OrderExecuted          lastExecuted;
-    silk::OrderExecutedWithPrice lastExecutedWithPrice;
-    silk::OrderCanceled          lastCanceled;
-    silk::OrderDeleted           lastDeleted;
-    silk::OrderReplaced          lastReplaced;
+    slk::OrderAdd               lastAdd;
+    slk::OrderAddMPID           lastAddMPID;
+    slk::OrderExecuted          lastExecuted;
+    slk::OrderExecutedWithPrice lastExecutedWithPrice;
+    slk::OrderCanceled          lastCanceled;
+    slk::OrderDeleted           lastDeleted;
+    slk::OrderReplaced          lastReplaced;
 };
 
 TEST(Parser, Header)
 {
     auto* pCursor = &MessageHeader[1];
-    auto  header  = silk::BuildHeader(pCursor);
+    auto  header  = slk::BuildHeader(pCursor);
     EXPECT_EQ(header, Header);
 }
 
 TEST(Parser, HandlerAdd)
 {
     TestHandler handler;
-    silk::ParseMessage(MessageAdd.data(), handler);
+    slk::ParseMessage(MessageAdd.data(), handler);
     EXPECT_EQ(handler.lastAdd, Add);
 }
 
 TEST(Parser, HandlerAddMPID)
 {
     TestHandler handler;
-    silk::ParseMessage(MessageAddMPID.data(), handler);
+    slk::ParseMessage(MessageAddMPID.data(), handler);
     EXPECT_EQ(handler.lastAddMPID, AddMPID);
 }
 
 TEST(Parser, HandlerExecuted)
 {
     TestHandler handler;
-    silk::ParseMessage(MessageExecuted.data(), handler);
+    slk::ParseMessage(MessageExecuted.data(), handler);
     EXPECT_EQ(handler.lastExecuted, Executed);
 }
 
 TEST(Parser, HandlerExecutedWithPrice)
 {
     TestHandler handler;
-    silk::ParseMessage(MessageExecutedWithPrice.data(), handler);
+    slk::ParseMessage(MessageExecutedWithPrice.data(), handler);
     EXPECT_EQ(handler.lastExecutedWithPrice, ExecutedWithPrice);
 }
 
 TEST(Parser, HandlerCanceled)
 {
     TestHandler handler;
-    silk::ParseMessage(MessageCanceled.data(), handler);
+    slk::ParseMessage(MessageCanceled.data(), handler);
     EXPECT_EQ(handler.lastCanceled, Canceled);
 }
 
 TEST(Parser, HandlerDeleted)
 {
     TestHandler handler;
-    silk::ParseMessage(MessageDeleted.data(), handler);
+    slk::ParseMessage(MessageDeleted.data(), handler);
     EXPECT_EQ(handler.lastDeleted, Deleted);
 }
 
 TEST(Parser, HandlerReplaced)
 {
     TestHandler handler;
-    silk::ParseMessage(MessageReplaced.data(), handler);
+    slk::ParseMessage(MessageReplaced.data(), handler);
     EXPECT_EQ(handler.lastReplaced, Replaced);
 }
 
@@ -232,42 +232,42 @@ TEST(Parser, Uint8)
 {
     std::uint8_t message[1]{0x40};
 
-    EXPECT_EQ(silk::ParseValue<std::uint8_t>(message), 64);
+    EXPECT_EQ(slk::ParseValue<std::uint8_t>(message), 64);
 }
 
 TEST(Parser, Uint16)
 {
     std::uint8_t message[2]{0x00, 0x04};
 
-    EXPECT_EQ(silk::ParseValue<std::uint16_t>(message), 4);
+    EXPECT_EQ(slk::ParseValue<std::uint16_t>(message), 4);
 }
 
 TEST(Parser, Uint32)
 {
     std::uint8_t message[4]{0x00, 0x01, 0x00, 0x00};
 
-    EXPECT_EQ(silk::ParseValue<std::uint32_t>(message), 65536);
+    EXPECT_EQ(slk::ParseValue<std::uint32_t>(message), 65536);
 }
 
 TEST(Parser, Int32)
 {
     std::uint8_t message[4]{0x00, 0x01, 0x00, 0x00};
 
-    EXPECT_EQ(silk::ParseValue<std::int32_t>(message), 65536);
+    EXPECT_EQ(slk::ParseValue<std::int32_t>(message), 65536);
 }
 
 TEST(Parser, Uint64)
 {
     std::uint8_t message[8]{0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
-    EXPECT_EQ(silk::ParseValue<std::uint64_t>(message), 281474976710656);
+    EXPECT_EQ(slk::ParseValue<std::uint64_t>(message), 281474976710656);
 }
 
 TEST(Parser, Char)
 {
     std::uint8_t message[1]{0x41};
 
-    EXPECT_EQ(silk::ParseValue<char>(message), 'A');
+    EXPECT_EQ(slk::ParseValue<char>(message), 'A');
 }
 
 TEST(Parser, String)
@@ -276,7 +276,7 @@ TEST(Parser, String)
         0x41, 0x41, 0x50, 0x4c, 0x20, 0x20, 0x20, 0x20,
     };
 
-    auto s = silk::ParseValue<char, 8>(message);
+    auto s = slk::ParseValue<char, 8>(message);
 
     EXPECT_EQ(std::string_view(s.data(), s.size()), "AAPL    ");
 }
@@ -285,7 +285,7 @@ TEST(Parser, SmallerInt)
 {
     std::uint8_t message[2]{0x01, 0x01};
 
-    EXPECT_EQ((silk::ParseValue<std::uint32_t, 2>(message)), 257);
+    EXPECT_EQ((slk::ParseValue<std::uint32_t, 2>(message)), 257);
 }
 
 TEST(Parser, Timestamp)
@@ -294,7 +294,7 @@ TEST(Parser, Timestamp)
         0x1f, 0x1a, 0xce, 0xd9, 0xf0, 0x00,
     };
 
-    EXPECT_EQ((silk::ParseValue<std::uint64_t, 6>(message)), 34200000000000);
+    EXPECT_EQ((slk::ParseValue<std::uint64_t, 6>(message)), 34200000000000);
 }
 
 TEST(Parser, Type)
@@ -303,6 +303,6 @@ TEST(Parser, Type)
         0x41,
     };
 
-    EXPECT_EQ((silk::ParseValue<silk::Type, silk::LenType>(message)),
-              silk::Type::Add);
+    EXPECT_EQ((slk::ParseValue<slk::Type, slk::LenType>(message)),
+              slk::Type::Add);
 }

@@ -1,5 +1,5 @@
 #include "parser.h"
 
-namespace silk
+namespace slk
 {
-}  // namespace silk
+}  // namespace slk

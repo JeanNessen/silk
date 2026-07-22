@@ -6,7 +6,7 @@
 #include <slk/io/file.h>
 #include <slk/parser/parser.h>
 
-namespace silk
+namespace slk
 {
 
 template <typename Handler>
@@ -30,4 +30,4 @@ void ParseFile(MappedFile& file, Handler& h)
     }
 }
 
-}  // namespace silk
+}  // namespace slk

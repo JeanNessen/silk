@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    silk::Result<silk::MappedFile> file = silk::Open(argv[1]);
+    slk::Result<slk::MappedFile> file = slk::Open(argv[1]);
 
     if (!file.has_value())
     {
@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
     StdOutHandler handler;
 
     auto start = std::chrono::high_resolution_clock::now();
-    silk::ParseFile<StdOutHandler>(*file, handler);
+    slk::ParseFile<StdOutHandler>(*file, handler);
     auto end = std::chrono::high_resolution_clock::now();
 
     auto processingTime =

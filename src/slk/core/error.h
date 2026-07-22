@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <expected>
 
-namespace silk
+namespace slk
 {
 enum class ErrorCode : std::uint8_t
 {
@@ -19,4 +19,4 @@ struct Error
 template <class T>
 using Result = std::expected<T, Error>;
 
-}  // namespace silk
+}  // namespace slk

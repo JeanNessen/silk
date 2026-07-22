@@ -1,4 +1,4 @@
-# Entry-point executable. Kept thin: it just links the silk library.
+# Entry-point executable. Kept thin: it just links the slk library.
 
 add_executable(silk main.cpp)
 

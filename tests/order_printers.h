@@ -4,7 +4,7 @@
 
 #include <slk/core/types.h>
 
-namespace silk
+namespace slk
 {
 
 void PrintTo(const OrderHeader& header, std::ostream* os);
@@ -13,4 +13,4 @@ void PrintTo(const OrderAddMPID& order, std::ostream* os);
 void PrintTo(const OrderExecuted& order, std::ostream* os);
 void PrintTo(const OrderReplaced& order, std::ostream* os);
 
-}  // namespace silk
+}  // namespace slk

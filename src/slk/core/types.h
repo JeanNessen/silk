@@ -3,7 +3,7 @@
 #include <array>
 #include <cstdint>
 
-namespace silk
+namespace slk
 {
 enum class Side
 {
@@ -109,4 +109,4 @@ constexpr std::size_t LenPrintable      = 1;
 constexpr std::size_t LenExecutionPrice = 4;
 constexpr std::size_t LenCanceledShares = 4;
 
-}  // namespace silk
+}  // namespace slk

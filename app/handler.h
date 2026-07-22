@@ -7,16 +7,16 @@
 class StdOutHandler final
 {
 public:
-    void OnAdd(silk::OrderAdd) { ++m_numAdd; }
-    void OnAddMPID(silk::OrderAddMPID) { ++m_numAddMPID; }
-    void OnExecuted(silk::OrderExecuted) { ++m_numExecuted; }
-    void OnExecutedWithPrice(silk::OrderExecutedWithPrice)
+    void OnAdd(slk::OrderAdd) { ++m_numAdd; }
+    void OnAddMPID(slk::OrderAddMPID) { ++m_numAddMPID; }
+    void OnExecuted(slk::OrderExecuted) { ++m_numExecuted; }
+    void OnExecutedWithPrice(slk::OrderExecutedWithPrice)
     {
         ++m_numExecutedWithPrice;
     }
-    void OnCanceled(silk::OrderCanceled) { ++m_numCanceled; }
-    void OnDeleted(silk::OrderDeleted) { ++m_numDeleted; }
-    void OnReplaced(silk::OrderReplaced) { ++m_numReplaced; }
+    void OnCanceled(slk::OrderCanceled) { ++m_numCanceled; }
+    void OnDeleted(slk::OrderDeleted) { ++m_numDeleted; }
+    void OnReplaced(slk::OrderReplaced) { ++m_numReplaced; }
     void OnSkipped() { ++m_numSkipped; }
 
     void PrintResults() const
